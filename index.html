@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Góc Chill 20/10 — Chúc Mừng Trịnh Thị Mỹ Duyên ☕</title>
+
+  <!-- Google Fonts: Be Vietnam Pro (sắc nét chuẩn tiếng Việt) + Patrick Hand & Caveat (chữ viết tay ghi chú) + Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Caveat:wght@600;700&family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-warm">
+
+  <!-- Background Canvas: Ambient Floating Dust Motes -->
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Background Rain Overlay (Toggleable) -->
+  <div id="rain-layer" class="rain-overlay" aria-hidden="true"></div>
+
+  <!-- Ambient Audio: Lo-Fi Chill Music -->
+  <audio id="bg-audio" loop preload="auto" src="assets/audio/soundtrack.mp3"></audio>
+
+  <!-- Top Navigation & Desk Controls Bar -->
+  <header class="desk-topbar">
+    <div class="topbar-brand">
+      <span class="brand-cup">☕</span>
+      <div class="brand-text">
+        <span class="brand-title">Góc Chill 20.10</span>
+        <span class="brand-sub">Dành tặng cô bạn Mỹ Duyên</span>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <!-- Desk Lamp Toggle -->
+      <button type="button" id="btn-lamp" class="desk-action-btn" title="Bật / Tắt đèn bàn học">
+        <span class="action-icon">💡</span>
+        <span class="action-label">Đèn bàn: <b id="lamp-status">Bật</b></span>
+      </button>
+
+      <!-- Rain Window Toggle -->
+      <button type="button" id="btn-rain" class="desk-action-btn" title="Bật / Tắt hiệu ứng mưa ngoài cửa sổ">
+        <span class="action-icon">🌧️</span>
+        <span class="action-label">Mưa: <b id="rain-status">Tắt</b></span>
+      </button>
+
+      <!-- Fortune Draw Button -->
+      <button type="button" id="btn-fortune" class="desk-action-btn highlight" title="Bốc quẻ may mắn ngày 20/10">
+        <span class="action-icon">🥠</span>
+        <span class="action-label">Bốc quẻ 20/10</span>
+      </button>
+
+      <!-- Lo-Fi Player Widget -->
+      <div id="player-widget" class="lofi-player-box" role="button" tabindex="0" title="Bật / Tắt nhạc Lo-Fi">
+        <div class="cassette-tape">
+          <div class="tape-reel reel-left"></div>
+          <div class="tape-center-window">
+            <span class="tape-audio-wave"></span>
+            <span class="tape-audio-wave"></span>
+            <span class="tape-audio-wave"></span>
+          </div>
+          <div class="tape-reel reel-right"></div>
+        </div>
+        <div class="player-info">
+          <span class="player-title">Lo-Fi Chill Beats ♫</span>
+          <span id="player-state-text" class="player-sub">Chạm để phát nhạc</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace / Desk Container -->
+  <main class="desk-workspace">
+    
+    <!-- Cozy Desk Lamp Ambient Cone Glow -->
+    <div id="lamp-glow-effect" class="lamp-warm-cone is-on" aria-hidden="true"></div>
+
+    <!-- The Scrapbook / Spiral Binder Notebook -->
+    <div class="notebook-wrapper">
+      
+      <!-- Side Bookmark Tabs for Quick Navigation -->
+      <nav class="notebook-tabs" aria-label="Các trang sổ tay">
+        <button type="button" class="tab-item is-active" data-page="0" title="Bìa sổ">
+          <span>🏠 Bìa Sổ</span>
+        </button>
+        <button type="button" class="tab-item" data-page="1" title="Khoảnh khắc 1">
+          <span>📸 Snap 1</span>
+        </button>
+        <button type="button" class="tab-item" data-page="2" title="Khoảnh khắc 2">
+          <span>📚 Snap 2</span>
+        </button>
+        <button type="button" class="tab-item" data-page="3" title="Khoảnh khắc 3">
+          <span>✨ Snap 3</span>
+        </button>
+        <button type="button" class="tab-item" data-page="4" title="Khoảnh khắc 4">
+          <span>🌸 Snap 4</span>
+        </button>
+        <button type="button" class="tab-item" data-page="5" title="Khoảnh khắc 5">
+          <span>☀️ Snap 5</span>
+        </button>
+        <button type="button" class="tab-item" data-page="6" title="Lời nhắn 20/10">
+          <span>💌 Lời Chúc</span>
+        </button>
+      </nav>
+
+      <!-- Notebook Body -->
+      <div class="notebook-body">
+        
+        <!-- Spiral Wire Spine (Gáy xoắn kim loại) -->
+        <div class="notebook-spiral-spine" aria-hidden="true">
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+        </div>
+
+        <!-- Notebook Pages Container -->
+        <div class="notebook-pages-viewport">
+
+          <!-- ==========================================
+               PAGE 0: BÌA SỔ & PROFILE VUI
+               ========================================== -->
+          <article class="notebook-page is-active" data-page-index="0">
+            <div class="page-inner cover-page">
+              
+              <!-- Sticky Tape Decoration -->
+              <div class="washi-tape tape-top-center" aria-hidden="true"></div>
+
+              <div class="cover-badge-tag">
+                <span>✦ Special Edition • 20.10.2026 ✦</span>
+              </div>
+
+              <h1 class="cover-main-title">
+                NHẬT KÝ CHILL 20/10
+              </h1>
+              <p class="cover-subtitle">
+                Cuốn sổ tay kỷ niệm & lời chúc thân thương gửi bạn <b>Trịnh Thị Mỹ Duyên</b>
+              </p>
+
+              <!-- Profile Card ID Pin -->
+              <div class="profile-pinned-card">
+                <div class="pushpin-icon" aria-hidden="true">📌</div>
+                
+                <div class="profile-card-header">
+                  <div class="profile-avatar-placeholder">
+                    <img src="https://files.catbox.moe/5fig1s.png" alt="Avatar Trịnh Thị Mỹ Duyên" class="mini-avatar">
+                  </div>
+                  <div class="profile-id-info">
+                    <div class="profile-name">Trịnh Thị Mỹ Duyên</div>
+                    <div class="profile-nick">Cô bạn luôn rạng rỡ và tích cực ✨</div>
+                  </div>
+                </div>
+
+                <div class="profile-card-details">
+                  <div class="detail-row">
+                    <span class="detail-label">Status hôm nay:</span>
+                    <span class="detail-val">Được quyền lười, bận xinh đẹp & nhận quà ✨</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Năng lượng:</span>
+                    <span class="detail-val">100% Chill, 0% Áp lực deadline ☕</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Nhiệm vụ 20/10:</span>
+                    <span class="detail-val">Luôn nở nụ cười, ăn ngon ngủ ngon và vui vẻ!</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fun Scrapbook Stickers -->
+              <div class="scrap-stickers-row">
+                <span class="sticker-badge badge-coffee">☕ Uống nước đầy đủ</span>
+                <span class="sticker-badge badge-deadline">🚫 Deadline né ra</span>
+                <span class="sticker-badge badge-smile">😊 Cười nhiều lên</span>
+                <span class="sticker-badge badge-money">💰 Sớm giàu bao bạn</span>
+              </div>
+
+              <div class="cover-cta-box">
+                <button type="button" class="btn-flip-next btn-primary-flip">
+                  <span>Lật mở cuốn sổ</span>
+                  <span class="btn-arrow">→</span>
+                </button>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ==========================================
+               PAGE 1: KHOẢNH KHẮC 1
+               ========================================== -->
+          <article class="notebook-page" data-page-index="1">
+            <div class="page-inner snap-page">
+              <div class="page-header-line">
+                <span class="page-num-pill">#01 / 05</span>
+                <span class="page-date-tag">Khoảnh Khắc Tươi Tắn</span>
+              </div>
+
+              <div class="scrap-polaroid-frame polaroid-tilt-left" data-lightbox-idx="0">
+                <div class="washi-tape tape-corner-left" aria-hidden="true"></div>
+                <div class="polaroid-photo-box">
+                  <img src="https://files.catbox.moe/5fig1s.png" alt="Ảnh kỷ niệm Mỹ Duyên 1" loading="lazy">
+                  <div class="zoom-hover-overlay">
+                    <span>🔍 Bấm để phóng to</span>
+                  </div>
+                </div>
+                <div class="polaroid-caption">
+                  <span class="caption-handwriting">"Xuất thần & Rạng rỡ" ✨</span>
+                </div>
+              </div>
+
+              <div class="handwritten-note-box note-yellow">
+                <div class="note-pin" aria-hidden="true">📎</div>
+                <h3 class="note-title">Lời bình của bạn bè:</h3>
+                <p class="note-content">
+                  Tấm này trông tươi tắn và năng lượng cực kỳ! Mong rằng bước sang tuổi mới hay mỗi ngày đi làm/đi học, cậu lúc nào cũng giữ được nụ cười tự tin và tinh thần thoải mái thế này nhé!
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ==========================================
+               PAGE 2: KHOẢNH KHẮC 2
+               ========================================== -->
+          <article class="notebook-page" data-page-index="2">
+            <div class="page-inner snap-page">
+              <div class="page-header-line">
+                <span class="page-num-pill">#02 / 05</span>
+                <span class="page-date-tag">Góc Tập Trung & Kiên Định</span>
+              </div>
+
+              <div class="scrap-polaroid-frame polaroid-tilt-right" data-lightbox-idx="1">
+                <div class="washi-tape tape-top-center" aria-hidden="true"></div>
+                <div class="polaroid-photo-box">
+                  <img src="https://files.catbox.moe/uf9nz9.jpg" alt="Ảnh kỷ niệm Mỹ Duyên 2" loading="lazy">
+                  <div class="zoom-hover-overlay">
+                    <span>🔍 Bấm để phóng to</span>
+                  </div>
+                </div>
+                <div class="polaroid-caption">
+                  <span class="caption-handwriting">"Góc chăm chỉ chạy deadline" 💻</span>
+                </div>
+              </div>
+
+              <div class="handwritten-note-box note-green">
+                <div class="note-pin" aria-hidden="true">📎</div>
+                <h3 class="note-title">Lời bình của bạn bè:</h3>
+                <p class="note-content">
+                  Nhìn dáng vẻ tập trung cao độ thế này thôi chứ khéo trong đầu đang tính trưa nay ăn bún chả hay cơm tấm, chiều nay uống trà sữa full topping gì đúng không? Chăm chỉ nhưng nhớ đừng bỏ bữa nha!
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ==========================================
+               PAGE 3: KHOẢNH KHẮC 3
+               ========================================== -->
+          <article class="notebook-page" data-page-index="3">
+            <div class="page-inner snap-page">
+              <div class="page-header-line">
+                <span class="page-num-pill">#03 / 05</span>
+                <span class="page-date-tag">Check-in Thần Thái</span>
+              </div>
+
+              <div class="scrap-polaroid-frame polaroid-tilt-left" data-lightbox-idx="2">
+                <div class="washi-tape tape-corner-right" aria-hidden="true"></div>
+                <div class="polaroid-photo-box">
+                  <img src="https://files.catbox.moe/f38oyg.jpg" alt="Ảnh kỷ niệm Mỹ Duyên 3" loading="lazy">
+                  <div class="zoom-hover-overlay">
+                    <span>🔍 Bấm để phóng to</span>
+                  </div>
+                </div>
+                <div class="polaroid-caption">
+                  <span class="caption-handwriting">"10 điểm không có nhưng" 📸</span>
+                </div>
+              </div>
+
+              <div class="handwritten-note-box note-pink">
+                <div class="note-pin" aria-hidden="true">📎</div>
+                <h3 class="note-title">Lời bình của bạn bè:</h3>
+                <p class="note-content">
+                  Góc máy đỉnh chóp, thần thái ngút ngàn chuẩn điểm 10! Cứ tự tin đăng mạng xã hội là bạn bè tha hồ vào thả tim mỏi tay luôn nhé cô gái.
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ==========================================
+               PAGE 4: KHOẢNH KHẮC 4
+               ========================================== -->
+          <article class="notebook-page" data-page-index="4">
+            <div class="page-inner snap-page">
+              <div class="page-header-line">
+                <span class="page-num-pill">#04 / 05</span>
+                <span class="page-date-tag">Dịu Dàng & Duyên Dáng</span>
+              </div>
+
+              <div class="scrap-polaroid-frame polaroid-tilt-right" data-lightbox-idx="3">
+                <div class="washi-tape tape-top-center" aria-hidden="true"></div>
+                <div class="polaroid-photo-box">
+                  <img src="https://files.catbox.moe/8e0rxy.jpg" alt="Ảnh kỷ niệm Mỹ Duyên 4" loading="lazy">
+                  <div class="zoom-hover-overlay">
+                    <span>🔍 Bấm để phóng to</span>
+                  </div>
+                </div>
+                <div class="polaroid-caption">
+                  <span class="caption-handwriting">"Vẻ mặt lúc hiền lành" 🌸</span>
+                </div>
+              </div>
+
+              <div class="handwritten-note-box note-orange">
+                <div class="note-pin" aria-hidden="true">📎</div>
+                <h3 class="note-title">Lời bình của bạn bè:</h3>
+                <p class="note-content">
+                  Nhìn ảnh thì nhẹ nhàng thùy mị ai cũng tưởng hiền, cơ mà khi ở cạnh bạn bè thì luôn vui vẻ và nhiều năng lượng tích cực. Cực kỳ đáng mến và nhiệt tình!
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ==========================================
+               PAGE 5: KHOẢNH KHẮC 5
+               ========================================== -->
+          <article class="notebook-page" data-page-index="5">
+            <div class="page-inner snap-page">
+              <div class="page-header-line">
+                <span class="page-num-pill">#05 / 05</span>
+                <span class="page-date-tag">Nụ Cười Tỏa Sáng</span>
+              </div>
+
+              <div class="scrap-polaroid-frame polaroid-tilt-left" data-lightbox-idx="4">
+                <div class="washi-tape tape-corner-left" aria-hidden="true"></div>
+                <div class="polaroid-photo-box">
+                  <img src="https://files.catbox.moe/d24zfk.jpg" alt="Ảnh kỷ niệm Mỹ Duyên 5" loading="lazy">
+                  <div class="zoom-hover-overlay">
+                    <span>🔍 Bấm để phóng to</span>
+                  </div>
+                </div>
+                <div class="polaroid-caption">
+                  <span class="caption-handwriting">"Vui vẻ & Đầy năng lượng" ☀️</span>
+                </div>
+              </div>
+
+              <div class="handwritten-note-box note-blue">
+                <div class="note-pin" aria-hidden="true">📎</div>
+                <h3 class="note-title">Lời bình của bạn bè:</h3>
+                <p class="note-content">
+                  Một bức ảnh mang trọn sự vui tươi của Mỹ Duyên. Cảm ơn cậu vì đã luôn là người bạn mang lại nhiều tiếng cười và sự thoải mái cho mọi người xung quanh.
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ==========================================
+               PAGE 6: BỨC THƯ CHÚC 20/10 CHUẨN BẠN BÈ
+               ========================================== -->
+          <article class="notebook-page" data-page-index="6">
+            <div class="page-inner letter-page">
+              
+              <div class="craft-letter-envelope">
+                
+                <header class="letter-top">
+                  <div class="letter-postage-stamp">
+                    <span>20.10</span>
+                    <small>VIETNAM</small>
+                  </div>
+                  <div class="letter-heading-box">
+                    <span class="letter-badge">Gửi Bạn Thân Mến 💌</span>
+                    <h2 class="letter-title">Chúc Mừng Ngày 20/10!</h2>
+                  </div>
+                </header>
+
+                <div class="letter-body-text">
+                  <p class="salutation">
+                    Gửi bạn <b>Trịnh Thị Mỹ Duyên</b>,
+                  </p>
+
+                  <p>
+                    Nhân ngày Phụ nữ Việt Nam 20/10, chúc bạn một ngày ngập tràn niềm vui, nhận được thật nhiều quà và lúc nào cũng giữ được tinh thần thoải mái, yêu đời!
+                  </p>
+
+                  <p>
+                    Chúc cho những dự định sắp tới của cậu đều suôn sẻ, việc học hành hay công việc gì cũng xuôi chèo mát mái, deadline né xa, còn tiền bạc thì cứ tự động tìm đến ví. Và đặc biệt là mau giàu để còn bao tớ ăn uống xả láng nhé! 😆
+                  </p>
+
+                  <p>
+                    Cuộc sống đôi khi sẽ có những ngày bận rộn hay mỏi mệt, những lúc như thế hãy cứ cho phép mình nghỉ ngơi, pha một cốc trà sữa/cà phê, bật bản nhạc yêu thích và thư giãn một chút. Cậu đã và đang làm rất tốt rồi!
+                  </p>
+
+                  <p class="closing">
+                    Chúc Mỹ Duyên một ngày 20/10 thật tuyệt vời và luôn xinh xắn, tự tin theo cách của riêng mình nhé! ☕✨
+                  </p>
+
+                  <div class="letter-signature">
+                    <span>— Từ người bạn tốt của Duyên ✌️ —</span>
+                  </div>
+                </div>
+
+                <!-- Interactive Coffee Cup Blessing -->
+                <div class="interactive-cup-box" id="cup-blessing-trigger" role="button" tabindex="0" title="Chạm vào cốc cà phê để nhận thêm lời chúc!">
+                  <div class="steam-wrap" aria-hidden="true">
+                    <span class="steam steam-1"></span>
+                    <span class="steam steam-2"></span>
+                    <span class="steam steam-3"></span>
+                  </div>
+                  <div class="coffee-cup-icon">☕</div>
+                  <div class="cup-hint-text">
+                    <b>Chạm vào cốc cà phê</b> để nhận lời chúc bất ngờ!
+                  </div>
+                  <div id="cup-secret-revealed" class="secret-cup-msg" style="display: none;">
+                    🎉 <i>"Voucher tặng Mỹ Duyên: Miễn phí 1 lần nghe tâm sự + 1 chầu trà sữa khi có dịp gặp nhau!"</i> 🧋
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Notebook Bottom Pagination Controls -->
+        <footer class="notebook-footer-nav">
+          <button type="button" id="btn-page-prev" class="nav-control-btn prev" title="Trang trước" disabled>
+            <span>← Trang trước</span>
+          </button>
+
+          <div class="page-indicator">
+            <span id="current-page-num">1</span> / <span id="total-page-num">7</span>
+          </div>
+
+          <button type="button" id="btn-page-next" class="nav-control-btn next" title="Trang sau">
+            <span>Trang tiếp →</span>
+          </button>
+        </footer>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ======================================================================
+       MODAL: BỐC QUẺ 20/10 (FORTUNE DRAW)
+       ====================================================================== -->
+  <div id="fortune-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card fortune-card">
+      <button type="button" class="modal-close-btn" id="btn-close-fortune" aria-label="Đóng">&times;</button>
+      
+      <div class="fortune-header">
+        <span class="fortune-icon">🥠</span>
+        <h3>Bốc Quẻ Vui 20/10</h3>
+        <p>Bấm nút bên dưới để rút một thông điệp may mắn ngẫu nhiên cho Mỹ Duyên!</p>
+      </div>
+
+      <div class="fortune-result-box" id="fortune-result-container">
+        <div class="fortune-tag" id="fortune-tag-type">Quẻ May Mắn</div>
+        <p class="fortune-quote" id="fortune-quote-text">
+          "Đang xáo quẻ... Nhấn nút 'Rút quẻ mới' để xem điều may mắn dành cho bạn!"
+        </p>
+      </div>
+
+      <button type="button" id="btn-draw-random" class="btn-primary-action">
+        <span>🎲 Rút quẻ may mắn khác</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: LIGHTBOX PHÓNG TO ẢNH
+       ====================================================================== -->
+  <div id="lightbox-modal" class="modal-backdrop lightbox-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="lightbox-viewer">
+      <button type="button" class="modal-close-btn" id="btn-close-lightbox" aria-label="Đóng">&times;</button>
+      
+      <button type="button" class="lightbox-nav-btn prev" id="btn-lightbox-prev" aria-label="Ảnh trước">&#10094;</button>
+      <div class="lightbox-img-frame">
+        <img id="lightbox-display-img" src="" alt="Ảnh kỷ niệm phóng to">
+        <p id="lightbox-display-caption" class="lightbox-caption"></p>
+      </div>
+      <button type="button" class="lightbox-nav-btn next" id="btn-lightbox-next" aria-label="Ảnh tiếp theo">&#10095;</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

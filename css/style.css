@@ -1,0 +1,1211 @@
+/* ==========================================================================
+   GÓC CHILL 20.10 — COZY LO-FI SCRAPBOOK STYLESHEET
+   Concept 4: Góc học tập & Cuốn sổ tay bạn bè ấm áp, mộc mạc, không sến súa
+   ========================================================================== */
+
+/* 1. RESET & BASE VARIABLES */
+:root {
+  --bg-desk: #2c2523;
+  --bg-desk-wood: radial-gradient(circle at 50% 20%, #443734 0%, #2a2220 70%, #1a1514 100%);
+  --paper-cream: #faf7f2;
+  --paper-border: #e3d9cc;
+  --text-primary: #37322f;
+  --text-muted: #736b63;
+  --text-highlight: #b45309;
+
+  --accent-gold: #e59846;
+  --accent-coffee: #6f4e37;
+  --accent-warm-rgb: 255, 236, 179;
+
+  /* Post-it Notes Colors */
+  --postit-yellow: #fef08a;
+  --postit-green: #dcfce7;
+  --postit-pink: #fce7f3;
+  --postit-orange: #ffedd5;
+  --postit-blue: #e0f2fe;
+
+  --shadow-cozy: 0 15px 35px rgba(0, 0, 0, 0.4), 0 5px 15px rgba(0, 0, 0, 0.25);
+  --shadow-subtle: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+  --font-hand: 'Patrick Hand', cursive;
+  --font-script: 'Caveat', cursive;
+  --font-title: 'Quicksand', sans-serif;
+
+  --transition-smooth: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background: var(--bg-desk);
+  background-image: var(--bg-desk-wood);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 2. BACKGROUND CANVAS & AMBIENT EFFECTS */
+#ambient-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Rain Effect Overlay */
+.rain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(180,205,230,0.1) 100%);
+}
+
+.rain-overlay.is-active {
+  opacity: 1;
+  background: repeating-linear-gradient(
+    170deg,
+    transparent 0px,
+    transparent 15px,
+    rgba(255, 255, 255, 0.07) 16px,
+    transparent 17px
+  );
+  animation: rainStreak 0.4s linear infinite;
+}
+
+@keyframes rainStreak {
+  0% { background-position: 0 0; }
+  100% { background-position: -20px 200px; }
+}
+
+/* Desk Lamp Warm Glow */
+.lamp-warm-cone {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  background: radial-gradient(ellipse 65% 55% at 50% 15%, rgba(255, 230, 160, 0.22) 0%, rgba(255, 200, 120, 0.08) 50%, transparent 80%);
+  transition: opacity 0.4s ease;
+}
+
+.lamp-warm-cone.is-on {
+  opacity: 1;
+}
+
+/* 3. TOPBAR CONTROLS */
+.desk-topbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(35, 28, 26, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-cup {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));
+  animation: cupFloat 3s ease-in-out infinite alternate;
+}
+
+@keyframes cupFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff2e0;
+  letter-spacing: 0.5px;
+}
+
+.brand-sub {
+  font-size: 0.8rem;
+  color: #d1b8aa;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Desk Action Buttons */
+.desk-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1ede8;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.desk-action-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.desk-action-btn.highlight {
+  background: linear-gradient(135deg, #e59846, #c2782b);
+  border-color: #f3b169;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(229, 152, 70, 0.35);
+}
+
+.desk-action-btn.highlight:hover {
+  filter: brightness(1.1);
+}
+
+/* Lo-Fi Cassette Player Widget */
+.lofi-player-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1c1514;
+  border: 1px solid #4a3834;
+  padding: 6px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+  user-select: none;
+  transition: var(--transition-smooth);
+}
+
+.lofi-player-box:hover {
+  border-color: #e59846;
+}
+
+.cassette-tape {
+  width: 36px;
+  height: 22px;
+  background: #332522;
+  border-radius: 4px;
+  border: 1px solid #5a423d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3px;
+  position: relative;
+}
+
+.tape-reel {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px dashed #eedccb;
+  background: #1c1514;
+  transition: transform 0.5s linear;
+}
+
+.lofi-player-box.is-playing .tape-reel {
+  animation: reelSpin 1.8s linear infinite;
+}
+
+@keyframes reelSpin {
+  100% { transform: rotate(360deg); }
+}
+
+.tape-center-window {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.tape-audio-wave {
+  display: inline-block;
+  width: 2px;
+  height: 6px;
+  background: #99786a;
+  border-radius: 1px;
+}
+
+.lofi-player-box.is-playing .tape-audio-wave {
+  animation: audioPulse 0.8s ease-in-out infinite alternate;
+}
+.lofi-player-box.is-playing .tape-audio-wave:nth-child(2) { animation-delay: 0.2s; height: 10px; }
+.lofi-player-box.is-playing .tape-audio-wave:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes audioPulse {
+  0% { transform: scaleY(0.4); background: #99786a; }
+  100% { transform: scaleY(1.4); background: #e59846; }
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #eedccb;
+}
+
+.player-sub {
+  font-size: 0.72rem;
+  color: #a38d82;
+}
+
+/* 4. WORKSPACE & NOTEBOOK CONTAINER */
+.desk-workspace {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 16px 60px;
+  min-height: calc(100vh - 80px);
+}
+
+.notebook-wrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 5. SIDE BOOKMARK TABS */
+.notebook-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-right: -4px;
+  z-index: 5;
+  padding-top: 30px;
+}
+
+.tab-item {
+  background: #e8ded2;
+  border: 1px solid #c9bbae;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  padding: 10px 14px 10px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #63534b;
+  cursor: pointer;
+  box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.15);
+  transition: var(--transition-smooth);
+  white-space: nowrap;
+}
+
+.tab-item:hover {
+  background: #fff;
+  color: #2b2524;
+  transform: translateX(-4px);
+}
+
+.tab-item.is-active {
+  background: #fffdf9;
+  color: #b45309;
+  padding-left: 18px;
+  border-left: 4px solid #e59846;
+  font-weight: 700;
+  transform: translateX(-4px);
+  box-shadow: -4px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 6. NOTEBOOK BODY & SPIRAL SPINE */
+.notebook-body {
+  position: relative;
+  background: var(--paper-cream);
+  border-radius: 16px;
+  box-shadow: var(--shadow-cozy);
+  width: 100%;
+  border: 1px solid var(--paper-border);
+  overflow: hidden;
+  background-image: 
+    radial-gradient(#e0d6c9 1px, transparent 1px),
+    linear-gradient(to right, rgba(0,0,0,0.03) 0%, transparent 8%, transparent 92%, rgba(0,0,0,0.03) 100%);
+  background-size: 20px 20px, 100% 100%;
+}
+
+/* Spiral Wire Spine Left Border Decor */
+.notebook-spiral-spine {
+  position: absolute;
+  top: 15px;
+  bottom: 60px;
+  left: 12px;
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.spiral-ring {
+  width: 22px;
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #dcd7d0 0%, #8e8880 50%, #47433f 100%);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+.spiral-ring::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  width: 14px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+}
+
+/* 7. NOTEBOOK PAGES VIEWPORT */
+.notebook-pages-viewport {
+  padding-left: 42px; /* clearance for spiral rings */
+  min-height: 580px;
+  position: relative;
+}
+
+.notebook-page {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  padding: 36px 36px 24px 28px;
+}
+
+.notebook-page.is-active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 8. PAGE 0: COVER PAGE STYLING */
+.cover-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.washi-tape {
+  width: 120px;
+  height: 28px;
+  background: rgba(230, 204, 178, 0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transform: rotate(-2deg);
+  position: relative;
+}
+
+.washi-tape.tape-top-center {
+  margin: -10px auto 16px;
+}
+
+.washi-tape.tape-corner-left {
+  position: absolute;
+  top: -10px;
+  left: -20px;
+  transform: rotate(-15deg);
+  z-index: 3;
+}
+
+.washi-tape.tape-corner-right {
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  transform: rotate(15deg);
+  z-index: 3;
+}
+
+.cover-badge-tag {
+  display: inline-block;
+  background: #f3e8dc;
+  color: #8c6239;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.cover-main-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 2.1rem;
+  color: #3b2f2f;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* Profile Pinned Card */
+.profile-pinned-card {
+  position: relative;
+  background: #fff;
+  border: 1px dashed #d1c4b5;
+  border-radius: 12px;
+  padding: 20px 24px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: var(--shadow-subtle);
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.pushpin-icon {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  font-size: 1.4rem;
+  transform: rotate(20deg);
+  filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f0e9df;
+  padding-bottom: 12px;
+}
+
+.profile-avatar-placeholder {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #e59846;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.mini-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2b2524;
+}
+
+.profile-nick {
+  font-size: 0.88rem;
+  color: #736b63;
+}
+
+.highlight-tag {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.profile-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.detail-row {
+  display: flex;
+  gap: 8px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #5c524a;
+  min-width: 125px;
+}
+
+.detail-val {
+  color: #37322f;
+}
+
+/* Scrapbook Stickers */
+.scrap-stickers-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 26px;
+}
+
+.sticker-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  transform: rotate(-1deg);
+  transition: transform 0.2s ease;
+}
+
+.sticker-badge:nth-child(even) { transform: rotate(1.5deg); }
+.sticker-badge:hover { transform: scale(1.05) rotate(0deg); }
+
+.badge-coffee { background: #fed7aa; color: #7c2d12; }
+.badge-deadline { background: #fecaca; color: #991b1b; }
+.badge-smile { background: #bbf7d0; color: #166534; }
+.badge-money { background: #fef08a; color: #854d0e; }
+
+.cover-cta-box {
+  margin-top: 6px;
+}
+
+.btn-primary-flip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #b45309;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(180, 83, 9, 0.35);
+  transition: var(--transition-smooth);
+}
+
+.btn-primary-flip:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(180, 83, 9, 0.45);
+}
+
+/* 9. SNAP PAGES (PHOTOS 1 - 5) */
+.page-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed #d1c4b5;
+  padding-bottom: 8px;
+  margin-bottom: 22px;
+}
+
+.page-num-pill {
+  background: #eadecd;
+  color: #6b5749;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.page-date-tag {
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: #8c6e58;
+}
+
+/* Polaroid Photo Frame */
+.scrap-polaroid-frame {
+  position: relative;
+  background: #fff;
+  padding: 12px 12px 20px;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08);
+  max-width: 380px;
+  margin: 0 auto 24px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.scrap-polaroid-frame:hover {
+  transform: scale(1.02) rotate(0deg) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.polaroid-tilt-left { transform: rotate(-2deg); }
+.polaroid-tilt-right { transform: rotate(2deg); }
+
+.polaroid-photo-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.8;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #eee8e0;
+}
+
+.polaroid-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.scrap-polaroid-frame:hover .polaroid-photo-box img {
+  transform: scale(1.04);
+}
+
+.zoom-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.scrap-polaroid-frame:hover .zoom-hover-overlay {
+  opacity: 1;
+}
+
+.polaroid-caption {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.caption-handwriting {
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  color: #3b2f2f;
+}
+
+/* Handwritten Note Box (Post-it style) */
+.handwritten-note-box {
+  position: relative;
+  padding: 16px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.note-pin {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 1.3rem;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+}
+
+.note-yellow { background: var(--postit-yellow); color: #583e0c; }
+.note-green  { background: var(--postit-green);  color: #14532d; }
+.note-pink   { background: var(--postit-pink);   color: #831843; }
+.note-orange { background: var(--postit-orange); color: #7c2d12; }
+.note-blue   { background: var(--postit-blue);   color: #0c4a6e; }
+
+.note-title {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.note-content {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* 10. PAGE 6: LETTER PAGE (BỨC THƯ 20/10) */
+.craft-letter-envelope {
+  background: #fffdfa;
+  border: 1px solid #e3d3c1;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: var(--shadow-subtle);
+  position: relative;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #f2e8dc 28px
+  );
+  line-height: 28px;
+}
+
+.letter-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ecdccb;
+  padding-bottom: 14px;
+}
+
+.letter-postage-stamp {
+  width: 54px;
+  height: 64px;
+  border: 2px dashed #b45309;
+  background: #fdf5ea;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #b45309;
+  font-size: 1rem;
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.08);
+  transform: rotate(4deg);
+}
+
+.letter-postage-stamp small {
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+}
+
+.letter-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.letter-title {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #3b2f2f;
+}
+
+.letter-body-text {
+  font-size: 1rem;
+  color: #37322f;
+}
+
+.letter-body-text p {
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+.salutation {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.closing {
+  font-weight: 500;
+}
+
+.letter-signature {
+  text-align: right;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: #b45309;
+  margin-top: 20px;
+}
+
+/* Interactive Coffee Cup Blessing */
+.interactive-cup-box {
+  margin-top: 30px;
+  background: #f8f2eb;
+  border: 1px dashed #cfb9a3;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.interactive-cup-box:hover {
+  background: #f3e8dc;
+  border-color: #b45309;
+}
+
+.coffee-cup-icon {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.steam-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  height: 14px;
+}
+
+.steam {
+  width: 3px;
+  height: 12px;
+  background: #bfa38a;
+  border-radius: 50%;
+  animation: steamRise 1.5s ease-in-out infinite;
+}
+.steam-2 { animation-delay: 0.3s; }
+.steam-3 { animation-delay: 0.6s; }
+
+@keyframes steamRise {
+  0% { transform: translateY(4px) scaleX(1); opacity: 0; }
+  50% { opacity: 0.7; }
+  100% { transform: translateY(-8px) scaleX(1.8); opacity: 0; }
+}
+
+.cup-hint-text {
+  font-size: 0.88rem;
+  color: #6d5b4e;
+}
+
+.secret-cup-msg {
+  margin-top: 10px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 6px;
+  border-left: 3px solid #b45309;
+  font-size: 0.92rem;
+  color: #b45309;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 11. FOOTER PAGINATION CONTROLS */
+.notebook-footer-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  border-top: 1px solid #ebd9c8;
+  background: rgba(250, 245, 238, 0.95);
+  border-radius: 0 0 16px 16px;
+  position: relative;
+  z-index: 6;
+}
+
+.nav-control-btn {
+  background: #fff;
+  border: 1px solid #d4c2b0;
+  color: #59483f;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.nav-control-btn:hover:not(:disabled) {
+  background: #b45309;
+  border-color: #b45309;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.nav-control-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #8c7362;
+}
+
+/* 12. MODALS (FORTUNE & LIGHTBOX) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fortune Card Modal */
+.fortune-card {
+  background: #faf6f0;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow-cozy);
+  border: 2px solid #e3d2be;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.modal-backdrop.is-open .fortune-card {
+  transform: scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #8a7668;
+  cursor: pointer;
+}
+
+.fortune-icon {
+  font-size: 2.8rem;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.fortune-header h3 {
+  font-family: var(--font-title);
+  font-size: 1.35rem;
+  color: #3b2f2f;
+  margin-bottom: 6px;
+}
+
+.fortune-header p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.fortune-result-box {
+  background: #fff;
+  border: 1px dashed #d6c4b2;
+  border-radius: 10px;
+  padding: 20px 16px;
+  margin-bottom: 24px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.fortune-tag {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.fortune-quote {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: #2b2524;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.btn-primary-action {
+  background: #b45309;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
+  transition: var(--transition-smooth);
+}
+
+.btn-primary-action:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+}
+
+/* Lightbox Modal */
+.lightbox-viewer {
+  position: relative;
+  max-width: 650px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-img-frame {
+  background: #fff;
+  padding: 12px 12px 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.lightbox-img-frame img {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.lightbox-caption {
+  margin-top: 12px;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: #3b2f2f;
+}
+
+.lightbox-nav-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  transition: var(--transition-smooth);
+}
+
+.lightbox-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* 13. RESPONSIVE QUERIES */
+@media (max-width: 768px) {
+  .desk-topbar {
+    padding: 10px 14px;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .desk-workspace {
+    padding: 15px 8px 40px;
+  }
+
+  .notebook-wrapper {
+    flex-direction: column;
+  }
+
+  .notebook-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+    padding-top: 0;
+    margin-right: 0;
+    margin-bottom: -1px;
+    padding-bottom: 4px;
+  }
+
+  .tab-item {
+    border-radius: 8px 8px 0 0;
+    border-right: 1px solid #c9bbae;
+    border-bottom: none;
+    font-size: 0.76rem;
+    padding: 8px 10px;
+  }
+
+  .tab-item.is-active {
+    border-left: 1px solid #c9bbae;
+    border-top: 3px solid #e59846;
+    transform: translateY(-2px);
+  }
+
+  .notebook-pages-viewport {
+    padding-left: 20px;
+    min-height: 520px;
+  }
+
+  .notebook-spiral-spine {
+    display: none; /* Hide rings on mobile for wider layout */
+  }
+
+  .notebook-page {
+    padding: 24px 16px 20px;
+  }
+
+  .cover-main-title {
+    font-size: 1.6rem;
+  }
+
+  .scrap-polaroid-frame {
+    max-width: 290px;
+  }
+
+  .handwritten-note-box {
+    padding: 14px 16px;
+  }
+
+  .craft-letter-envelope {
+    padding: 18px 14px;
+  }
+}

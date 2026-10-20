@@ -1,0 +1,12 @@
+# Bỏ qua toàn bộ ảnh cục bộ để bảo mật và không đưa lên Git
+img/
+*.jpg
+*.jpeg
+*.png
+*.jfif
+*.webp
+assets/images/
+
+# System files
+.DS_Store
+Thumbs.db
