@@ -8,30 +8,33 @@
   'use strict';
 
   // =========================================================================
-  // 1. DATA: 5 ẢNH KỶ NIỆM TỪ THƯ MỤC IMG/
+  // 1. DATA: 5 ẢNH KỶ NIỆM (BASE64 AN TOÀN TRỰC TIẾP TỪ PHOTOS-DATA.JS)
   // =========================================================================
-  const photosList = [
-    {
-      src: 'https://files.catbox.moe/5fig1s.png',
-      caption: '"Xuất thần & Rạng rỡ" ✨'
-    },
-    {
-      src: 'https://files.catbox.moe/uf9nz9.jpg',
-      caption: '"Góc chăm chỉ chạy deadline" 💻'
-    },
-    {
-      src: 'https://files.catbox.moe/f38oyg.jpg',
-      caption: '"10 điểm không có nhưng" 📸'
-    },
-    {
-      src: 'https://files.catbox.moe/8e0rxy.jpg',
-      caption: '"Vẻ mặt lúc hiền lành" 🌸'
-    },
-    {
-      src: 'https://files.catbox.moe/d24zfk.jpg',
-      caption: '"Vui vẻ & Đầy năng lượng" ☀️'
+  const photosList = window.MY_DUYEN_PHOTOS || [];
+
+  function initPhotosDOM() {
+    if (!window.MY_DUYEN_PHOTOS || window.MY_DUYEN_PHOTOS.length === 0) return;
+    
+    // Inject Avatar
+    const avatar = document.querySelector('.profile-avatar-placeholder img');
+    if (avatar && window.MY_DUYEN_PHOTOS[0]) {
+      avatar.src = window.MY_DUYEN_PHOTOS[0].src;
     }
-  ];
+
+    // Inject 5 polaroid cards
+    window.MY_DUYEN_PHOTOS.forEach((item, idx) => {
+      const cardImg = document.querySelector(`.scrap-polaroid-frame[data-lightbox-idx="${idx}"] img`);
+      if (cardImg) {
+        cardImg.src = item.src;
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhotosDOM);
+  } else {
+    initPhotosDOM();
+  }
 
   // Danh sách quẻ may mắn 20/10 hài hước, bạn bè
   const fortuneCards = [
